@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Caveat|Covered+By+Your+Grace|Gloria+Hallelujah|Kaushan+Script|Marck+Script|Satisfy|Shadows+Into+Light|Yellowtail" rel="stylesheet">
+</head>
+<body>
+    <div class="Style">
+        <b><p style="font-size:40px;text-align:center;margin:10px">History</p></b>
+        <hr style="height:5px;border-width:0;color:gray;background-color:gray">
+        <table style="padding: 10px 10px;font-size:25px;"></table>
+    </div>
+
+    <script type="text/javascript">
+        var ref = "https://"
+        onload = fetch("./History.csv").then(res => {
+            return res.text()
+        }).then(data => {
+            let result = data.split(/\r?\n|\r/).map(e => {
+                return e.split(",")
+            })
+            result.forEach(e => {
+                let m = e.map(e => {
+                    if(e.includes(ref))
+                        return '<ul>' + '<a href="' + e + '" style="text-decoration: none;">' + e + '</a>' + '<br>' + '</ul>';
+                    else
+                        return '<ul>' + e + '</ul>';
+                }).join("");
+                let ce = document.createElement("tr");
+                ce.innerHTML = m;
+                if(ce.innerText != "")
+                    document.querySelector("table").appendChild(ce);
+            })
+        })
+    </script>
+</body>
+</html>

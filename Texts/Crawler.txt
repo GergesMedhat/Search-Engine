@@ -1,0 +1,32 @@
+import json
+import requests
+from bs4 import BeautifulSoup
+
+start_url = 'https://stackoverflow.com/questions/15'
+
+
+def crawl(url):
+    try:
+        response = requests.get(url)
+    except requests.exceptions.ConnectionError:
+        print('Given URL: %s is not available!' % url)
+        return
+
+    content = BeautifulSoup(response.text, 'lxml')
+    links = content.findAll('a', {'class': 'question-hyperlink'})
+    description = content.findAll('div', {'class': 'excerpt'})
+
+    print(len(links), len(description))
+    print(links, description)
+
+    for index in range(0, len(description)):
+        question = {
+            'title': links[index].text,
+            'url': links[index]['href'],
+            'description': description[index].text.strip().replace('\n', '')
+        }
+        print(json.dumps(question, indent=2))
+
+
+crawl(start_url)
+
